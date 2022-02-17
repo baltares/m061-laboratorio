@@ -1,0 +1,45 @@
+body {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+main {
+    margin: 0 auto;
+    width: 500px;
+}
+h1 {
+    text-align: center;
+    margin: 20px;
+}
+section#products-section{
+    margin-bottom: 30px;
+}
+button {
+    width: 100%;
+    font-size: 1.2em;
+    padding: 0.3em;
+    margin-bottom: 20px;
+}
+div.total-section {
+    font-weight: bold;
+    text-align: right;
+    margin-bottom: 20px;
+}
+span.quantity {
+    width: 80px;
+    display: inline-block;
+}
+span.quantity::after {
+    content: "€";
+    padding-left: 6px;
+}
+li.product-row {
+    margin-bottom: 10px;
+    text-align: right;
+}
+input.product-unit {
+    width: 80px;
+    margin-left: 10px;
+    text-align: center;
+}
+.border-color-red {
+    border-color: red;
+}
