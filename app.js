@@ -70,30 +70,27 @@ const PRODUCTS = [
 document.getElementById("button-calculate").disabled = true;
 let productsList = document.getElementById("products-list");
 
-PRODUCTS.forEach((product,index) => {
+PRODUCTS.forEach((product, index) => {
     //Define product row
     let productRow = document.createElement("li");
     productRow.setAttribute("class", "product-row");
-    productRow.setAttribute("id", "product"+index);
+    productRow.setAttribute("id", "product" + index);
 
     //Define elements inside product row
     let productName = document.createElement("span");
     productName.setAttribute("class", "product-name");
-    productName.innerHTML = product.description+" - "+product.price+"€/ud.";
+    productName.innerHTML = product.description + " - " + product.price + "€/ud.";
 
     let productInput = document.createElement("input");
     productInput.setAttribute("class", "product-unit");
-    productInput.setAttribute("id", "input"+index);
+    productInput.setAttribute("id", "input" + index);
     productInput.setAttribute("type", "number");
     productInput.setAttribute("value", 0);
     productInput.setAttribute("step", 1);
     productInput.setAttribute("min", 0);
     productInput.setAttribute("max", product.stock);
-    productInput.addEventListener("change", () => {
-        (productInput.value == 0)?
-        document.getElementById("button-calculate").disabled = true :
-        document.getElementById("button-calculate").disabled = false; 
-    });
+    productInput.addEventListener("change", () =>
+        document.getElementById("button-calculate").disabled = (productInput.value == 0) ? true : false);
 
     //Add elements to product row
     productRow.appendChild(productName);
@@ -103,8 +100,8 @@ PRODUCTS.forEach((product,index) => {
     productsList.appendChild(productRow);
 
     //Check stock
-    showNoStock(product,index);
-}); 
+    showNoStock(product, index);
+});
 
 // CALCULATING TOTALS
 let buttonCalculate = document.getElementById("button-calculate");
@@ -113,17 +110,17 @@ buttonCalculate.addEventListener("click", () => {
     let subtotal = 0;
     let iva = 0;
     let total = 0;
-    PRODUCTS.forEach((product,index) => {
-        let quantity = document.getElementById("input"+index).value;
+    PRODUCTS.forEach((product, index) => {
+        let quantity = document.getElementById("input" + index).value;
         product.stock -= quantity;
-        showNoStock(product,index);
+        showNoStock(product, index);
         productNoIva = product.price * quantity;
         subtotal += productNoIva;
-        iva += productNoIva * product.tax/100; 
-        document.getElementById("input"+index).value = 0;
+        iva += productNoIva * product.tax / 100;
+        document.getElementById("input" + index).value = 0;
     });
     total = subtotal + iva;
-    console.log(subtotal+" "+iva+" "+total);
+    console.log(subtotal + " " + iva + " " + total);
     document.getElementById("subtotal").getElementsByClassName("quantity")[0].innerHTML = Math.round(subtotal * 100) / 100;
     document.getElementById("iva").getElementsByClassName("quantity")[0].innerHTML = Math.round(iva * 100) / 100;
     document.getElementById("total").getElementsByClassName("quantity")[0].innerHTML = Math.round(total * 100) / 100;
@@ -131,7 +128,6 @@ buttonCalculate.addEventListener("click", () => {
 });
 
 // Function to show no stock
-function showNoStock(product,index) {
-    if(product.stock == 0) document.getElementById("input"+index).classList.add("border-color-red"); 
+function showNoStock(product, index) {
+    if (product.stock == 0) document.getElementById("input" + index).classList.add("border-color-red");
 }
-
