@@ -1,65 +1,62 @@
 // DEFINING VARIABLES
-const TAX_TYPE = {
-    REGULAR: 21,
-    LOWER: 4,
-    EXEMPT: 0
-};
-Object.freeze(TAX_TYPE);
+const REGULAR_TYPE = 21;
+const LOWER_TYPE = 4;
+const EXEMPT_TYPE = 0;
 
 const PRODUCTS = [
     {
         description: "Goma de borrar",
         price: 0.25,
-        tax: TAX_TYPE.LOWER,
+        tax: LOWER_TYPE,
         stock: 2,
         units: 0,
     },
     {
         description: "Lápiz H2",
         price: 0.4,
-        tax: TAX_TYPE.LOWER,
+        tax: LOWER_TYPE,
         stock: 5,
         units: 0,
     },
     {
         description: "Cinta rotular",
         price: 9.3,
-        tax: TAX_TYPE.REGULAR,
+        tax: REGULAR_TYPE,
         stock: 2,
         units: 0,
     },
     {
         description: "Papelera plástico",
         price: 2.75,
-        tax: TAX_TYPE.REGULAR,
+        tax: REGULAR_TYPE,
         stock: 5,
         units: 0,
     },
     {
         description: "Escuadra",
         price: 8.4,
-        tax: TAX_TYPE.REGULAR,
+        tax: REGULAR_TYPE,
         stock: 3,
         units: 0,
     },
     {
         description: "Pizarra blanca",
         price: 5.95,
-        tax: TAX_TYPE.REGULAR,
+        tax: REGULAR_TYPE,
         stock: 2,
         units: 0,
     },
     {
         description: "Afilador",
         price: 1.2,
-        tax: TAX_TYPE.LOWER,
+        tax: LOWER_TYPE,
         stock: 10,
         units: 0,
     },
     {
         description: "Libro ABC",
         price: 19,
-        tax: TAX_TYPE.EXEMPT,
+        tax: EXEMPT_TYPE,
         stock: 2,
         units: 0,
     },
@@ -100,7 +97,7 @@ PRODUCTS.forEach((product, index) => {
     productsList.appendChild(productRow);
 
     //Check stock
-    showNoStock(product, index);
+    showNoStock(product, productInput);
 });
 
 // CALCULATING TOTALS
@@ -111,23 +108,31 @@ buttonCalculate.addEventListener("click", () => {
     let iva = 0;
     let total = 0;
     PRODUCTS.forEach((product, index) => {
-        let quantity = document.getElementById("input" + index).value;
+        // Product input
+        let inputField = document.getElementById("input" + index);
+        let quantity = inputField.value;
         product.stock -= quantity;
-        showNoStock(product, index);
+        showNoStock(product, inputField);
+        inputField.setAttribute("max", product.stock);
+        // Adding totals
         productNoIva = product.price * quantity;
         subtotal += productNoIva;
         iva += productNoIva * product.tax / 100;
+        // Reset input
         document.getElementById("input" + index).value = 0;
     });
+
+    // Print totals
     total = subtotal + iva;
-    console.log(subtotal + " " + iva + " " + total);
-    document.getElementById("subtotal").getElementsByClassName("quantity")[0].innerHTML = Math.round(subtotal * 100) / 100;
-    document.getElementById("iva").getElementsByClassName("quantity")[0].innerHTML = Math.round(iva * 100) / 100;
-    document.getElementById("total").getElementsByClassName("quantity")[0].innerHTML = Math.round(total * 100) / 100;
+    Object.entries({ subtotal, iva, total }).forEach(([key, value]) => {
+        document.getElementById(key).getElementsByClassName("quantity")[0].innerHTML = Math.round(value * 100) / 100;
+    });
+
+    // Reset button
     document.getElementById("button-calculate").disabled = true;
 });
 
 // Function to show no stock
-function showNoStock(product, index) {
-    if (product.stock == 0) document.getElementById("input" + index).classList.add("border-color-red");
+function showNoStock(product, inputField) {
+    if (product.stock == 0) inputField.classList.add("border-color-red");
 }
